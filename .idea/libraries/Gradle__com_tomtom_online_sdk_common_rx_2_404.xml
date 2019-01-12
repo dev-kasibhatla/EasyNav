@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tomtom.online:sdk-common-rx-2.404">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-common-rx-2.404.aar/c36c3a74ef5220373c1e7448c4ea78dd/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-common-rx-2.404.aar/c36c3a74ef5220373c1e7448c4ea78dd/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tomtom.online/sdk-common-rx/2.404/18e38fba6e63287fe8f1cb6e0f72bbc8e881b7de/sdk-common-rx-2.404-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

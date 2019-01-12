@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tomtom.online:sdk-routeplanner-core-2.404">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-routeplanner-core-2.404.aar/8e91ce81dcf9b2a8d6d1a340ea2ddef8/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-routeplanner-core-2.404.aar/8e91ce81dcf9b2a8d6d1a340ea2ddef8/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tomtom.online/sdk-routeplanner-core/2.404/47b2749a3fd0d21d0f111484a41784b1e55c5599/sdk-routeplanner-core-2.404-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

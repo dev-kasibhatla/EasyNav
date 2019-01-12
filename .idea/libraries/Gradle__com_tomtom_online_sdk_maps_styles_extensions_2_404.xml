@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tomtom.online:sdk-maps-styles-extensions-2.404">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-maps-styles-extensions-2.404.aar/9493f876bc13342f9e6e3870aad666da/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/sdk-maps-styles-extensions-2.404.aar/9493f876bc13342f9e6e3870aad666da/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tomtom.online/sdk-maps-styles-extensions/2.404/232034da4d5ed635cafb270cba051c119c66d9d/sdk-maps-styles-extensions-2.404-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
