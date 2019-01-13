@@ -1,7 +1,9 @@
 package kasibhatla.dev.easynav;
 
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -12,16 +14,69 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
-                implements HomeFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener {
+import com.tomtom.online.sdk.common.location.LatLng;
+import com.tomtom.online.sdk.common.util.LogUtils;
+import com.tomtom.online.sdk.map.CameraPosition;
+import com.tomtom.online.sdk.map.MapFragment;
+import com.tomtom.online.sdk.map.MarkerBuilder;
+import com.tomtom.online.sdk.map.OnMapReadyCallback;
+import com.tomtom.online.sdk.map.SimpleMarkerBalloon;
+import com.tomtom.online.sdk.map.TomtomMap;
+import com.tomtom.online.sdk.map.model.MapTilesType;
 
+import java.io.File;
+
+public class MainActivity extends AppCompatActivity
+                implements HomeFragment.OnFragmentInteractionListener, BlankMapFragment.OnFragmentInteractionListener{
     private static final String TAG = "main-activity";
+
+    private File dataFolder = new File (Environment.getExternalStorageDirectory(), "/Android/data/kasibhatla" +
+            ".dev.easynav/");
+    private File logFolder = new File(dataFolder, "Logs/");
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        Log.i(TAG, "This callback was used");
     }
 
+
+    /*TomtomMap tmap;
+    @Override
+    public void onMapReady(TomtomMap map){
+        //Map is ready here
+        Log.i(TAG, "started map callback function");
+        tmap = map;
+        tmap.setMyLocationEnabled(true);
+        //tmap.setGpsPositionIndicator(new DefaultGpsPositionIndicator());
+        tmap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
+        //tmap.getUiSettings().setMapTilesType(MapTilesType.RASTER);
+        Location location = tmap.getUserLocation();
+        Log.i("map-fragment", location.toString());
+        tmap.getGpsPositionIndicator();
+        Log.i("map-fragment", "Reached end of this map function");
+
+    }*/
+    /*TomtomMap tmap;
+        private final MapFragment.OnMapReadyCallback onMapReadyCallback =
+            new MapFragment.OnMapReadyCallback() {
+                @Override
+                public void onMapReady(TomtomMap map) {
+                    //Map is ready here
+                    Log.i(TAG, "started map callback function");
+                    tmap = map;
+                    tmap.setMyLocationEnabled(true);
+                    //tmap.setGpsPositionIndicator(new DefaultGpsPositionIndicator());
+                    tmap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
+                    //tmap.getUiSettings().setMapTilesType(MapTilesType.RASTER);
+                    Location location = tmap.getUserLocation();
+                    Log.i("map-fragment", location.toString());
+                    tmap.getGpsPositionIndicator();
+                    Log.i("map-fragment", "Reached end of this map function");
+
+
+                }
+            };
+*/
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -37,7 +92,16 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
-                    startFragment(new MapFragment());
+                    /*mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                    try{
+                        mapFragment.getAsyncMap(onMapReadyCallback);
+
+                    }catch (Exception e){
+                        Log.e(TAG, "Exception in map fragment");
+                        e.printStackTrace();
+                    }*/
+                    startFragment(new BlankMapFragment());
+
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
@@ -51,6 +115,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startLoggingEverything(true);
         setContentView(R.layout.activity_main);
         startFragment(new HomeFragment());
         mTextMessage = findViewById(R.id.message);
@@ -75,4 +140,44 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    protected void startLoggingEverything(boolean youShouldLog){
+        if(youShouldLog){
+            LogUtils.enableLogs(Log.VERBOSE);
+        }
+        else{
+            //critical logging always available
+            LogUtils.enableLogs(Log.ERROR);
+        }
+        File logFile = new File(logFolder, "log.log");
+        if(!dataFolder.exists()){
+            dataFolder.mkdir();
+            logFolder.mkdir();
+        }
+        try{
+            LogUtils.LogFileCollector.collectLogsToFile(logFile + "");
+            LogUtils.registerCrashObserver(getApplicationContext(), Uri.parse("file://" + logFolder + "1"));
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.i(TAG, "error generating tomtom log file");
+        }
+    }
+
+
+    private TomtomMap tomtomMap;
+    private MapFragment mapFragment;
+
+
+    private final OnMapReadyCallback onMapReadyCallback =
+            new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(TomtomMap map) {
+                    //Map is ready here
+                    Log.i(TAG, "onMapReadyCallback works");
+                    tomtomMap = map;
+                    tomtomMap.setMyLocationEnabled(true);
+                }
+
+            };
 }
+
+
