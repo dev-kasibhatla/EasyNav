@@ -1,6 +1,7 @@
 package kasibhatla.dev.easynav;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,15 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tomtom.online.sdk.common.location.LatLng;
+import com.tomtom.online.sdk.map.CameraPosition;
+import com.tomtom.online.sdk.map.Icon;
 import com.tomtom.online.sdk.map.MapFragment;
+import com.tomtom.online.sdk.map.MarkerAnchor;
+import com.tomtom.online.sdk.map.MarkerBuilder;
 import com.tomtom.online.sdk.map.OnMapReadyCallback;
+import com.tomtom.online.sdk.map.SimpleMarkerBalloon;
 import com.tomtom.online.sdk.map.TomtomMap;
+import com.tomtom.online.sdk.map.model.MapTilesType;
 
 
 /**
@@ -78,17 +86,57 @@ public class BlankMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_blank_map, null, false);
-
+        View view  = inflater.inflate(R.layout.fragment_blank_map, container, false);
          mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         mapFragment.getAsyncMap(this);
+
+        setMapProperties(view);
 
         // Inflate the layout for this fragment
         return view;
     }
 
+    private void setMapProperties(View view){
+        Button rasterButton = view.findViewById(R.id.button1);
+        Button vectorButton = view.findViewById(R.id.button2);
+        Button zoomIn = view.findViewById(R.id.btnMapZoomIn);
+        Button zoomOut = view.findViewById(R.id.btnMapZoomOut);
 
+        rasterButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tomtomMap.getUiSettings().setMapTilesType(MapTilesType.RASTER);
+                    }
+                }
+        );
+
+        vectorButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tomtomMap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
+                    }
+                }
+        );
+        zoomIn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tomtomMap.zoomIn();
+                    }
+                }
+        );
+        zoomOut.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tomtomMap.zoomOut();
+                    }
+                }
+        );
+    }
 
 
 
@@ -140,6 +188,15 @@ public class BlankMapFragment extends Fragment implements OnMapReadyCallback {
         Log.i(TAG, "onMapReadyCallback works");
         tomtomMap = map;
         tomtomMap.setMyLocationEnabled(true);
+        //get current location
+        Location location = tomtomMap.getUserLocation();
+        tomtomMap.set2DMode(); //3D and 25D available
+        LatLng pune = new LatLng(18.5204,73.8567);
+        LatLng amsterdam = new LatLng(52.37, 4.90);
+        SimpleMarkerBalloon balloon = new SimpleMarkerBalloon("Pune");
+        tomtomMap.addMarker(new MarkerBuilder(pune).markerBalloon(balloon));
+        tomtomMap.centerOn(CameraPosition.builder(pune).zoom(6.0).build());
     }
+
 
 }
